@@ -1,4 +1,4 @@
-//5.1.8 in the mod at the top of the page the text box update for the date works not the task and the localstorage is no longer saving the task afte the browser reloads
+//5.2.6 at the top of .....  the text box update for the date works not the task
 //
 //
 
@@ -51,7 +51,6 @@ var saveTasks = function() {
 
 
 
-
 // modal was triggered
 $("#task-form-modal").on("show.bs.modal", function() {
   // clear values
@@ -91,35 +90,31 @@ $("list-group").on("click", "p", function() {
   var text = $(this)
     .text()
     .trim();
-      var textInput = $("<textarea>")
-      .addClass("form-control")
-      .val(text);
-        $(this).replaceWith(textInput);
-        textInput.trigger("focus");
+
+  // rplace p element with a new textarea
+  var textInput = $("<textarea>").addClass("form-control").val(text);
+  $(this).replaceWith(textInput);
+  
+  // auto focus new element
+  textInput.trigger("focus");
 });
 
 // 5.1.6 event listener
 $(".list-group").on("blur", "textarea", function() {
 
   //get the textareas current value/text
-  var text = $(this)
-  .val()
-  .trim();
-  tasks[status][index].text = text;
-  saveTasks();
+  var text = $(this).val();
 
   //get parent uls id attribute
   var status = $(this)
   .closest(".list-group")
   .attr("id")
   .replace("list-", "");
-  tasks[status][index].text = text;
-  saveTasks();
-
-  //get the tasks position in the list of other il elements
-  var index = $(this)
+var index = $(this)
   .closest(".list-group-item")
   .index();
+
+  // update task in array and re-save to localstorage
   tasks[status][index].text = text;
   saveTasks();
 
@@ -127,7 +122,7 @@ $(".list-group").on("blur", "textarea", function() {
   var taskP = $("<p>")
   .addClass("m-1")
   .text(text);
-
+  
   //replace textarea with p element
   $(this).replaceWith(taskP);
 });
@@ -143,9 +138,9 @@ $(".list-group").on("click", "span", function() {
 
   //create new input element
   var dateInput = $("<input>")
-  .attr("type", "text")
-  .addClass("form-control")
-  .val(date);
+    .attr("type", "text")
+    .addClass("form-control")
+    .val(date);
 
   //swap out elements
   $(this).replaceWith(dateInput);
@@ -156,32 +151,29 @@ $(".list-group").on("click", "span", function() {
 
 //5.1.7 event listener
 //value of due date was changed
-$(".list-group").on("blur", "input[type-'text']", function() {
+$(".list-group").on("blur", "input[type='text']", function() {
   
   //get current text
-  var date = $(this)
-  .val()
-  .trim();
+  var date = $(this).val();
 
   //get the parent uls id attribute
   var status = $(this)
-  .closest(".list-group")
-  .attr("id")
-  .replace("list-", "");
-
+    .closest(".list-group")
+    .attr("id")
+    .replace("list-", "");
   //get the tasks position in the list of other li elements
   var index = $(this)
-  .closest(".list-group-item")
-  .index();
+    .closest(".list-group-item")
+    .index();
 
   //update task in array and re-save to localstorage
-  task[status][index].date = date;
+  tasks[status][index].date = date;
   saveTasks();
 
   //recreate span element with bootstrap classes
   var taskSpan = $("<span>")
-  .addClass("badge badge-primary badge-pill")
-  .text(date);
+    .addClass("badge badge-primary badge-pill")
+    .text(date);
 
   //replace input with span element
   $(this).replaceWith(taskSpan);
